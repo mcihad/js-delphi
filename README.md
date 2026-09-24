@@ -9,9 +9,19 @@ sürüm geçmişi ve çok kullanıcılı canlı senkron tek pakette.
 
 ## Hızlı başlangıç
 
+Python tarafı [uv](https://docs.astral.sh/uv/) ile yönetilir (`pyproject.toml` + `uv.lock`).
+
 ```bash
-make install   # .venv + pip + npm install
+make install   # uv sync (.venv) + npm install
 make run       # IDE'yi derler ve http://127.0.0.1:8000 adresinde sunar
+```
+
+Make olmadan:
+
+```bash
+uv sync                                   # .venv, uv.lock'taki sürümlerle
+npm --prefix frontend install && npm --prefix frontend run build
+uv run uvicorn backend.main:app --port 8000
 ```
 
 İlk açılışta "Müşteri Takip" demo projesi (SQLite veritabanı, 3 form, ana-detay örneği) otomatik oluşturulur.
@@ -20,14 +30,15 @@ Tüm hedefler: `make help`.
 
 | Hedef | Açıklama |
 |---|---|
-| `make install` / `make install-db` | Bağımlılıklar / isteğe bağlı PostgreSQL, MySQL, MariaDB, MSSQL, MongoDB sürücüleri |
+| `make install` / `make install-db` | `uv sync` + `npm install` / `uv sync --extra db`: PostgreSQL, MySQL, MariaDB, MSSQL, MongoDB sürücüleri |
+| `make lock` | `pyproject.toml` değişince `uv.lock`'u günceller |
 | `make run` · `make serve` | Derle + çalıştır · yalnızca çalıştır |
 | `make dev` · `make backend` · `make frontend` | Geliştirme sunucuları |
 | `make runtime` | `vcl.ts` → `vcl.js`, `vcl.d.ts`, `vcl.manifest.json` |
-| `make test` · `make typecheck` · `make check` | Testler ve tip denetimi |
+| `make test` · `make typecheck` · `make check` | Testler (`uv run pytest`) ve tip denetimi |
 | `make screenshots` | Çalışan sunucudan `docs/screenshots/*.png` üretir |
 
-Gereksinimler: Python 3.11+, Node.js 20.19+ veya 22.12+ (Vite 8).
+Gereksinimler: uv (Python 3.11+ yoksa kendisi indirir), Node.js 20.19+ veya 22.12+ (Vite 8).
 
 ## Ekran görüntüleri
 
@@ -97,6 +108,7 @@ Form1.prototype.btnKaydet_OnClick = async function (Sender, e) { … };
 ### Dizin yapısı
 
 ```
+pyproject.toml · uv.lock · Makefile
 backend/
   main.py, config.py, db.py, models.py, schemas.py, security.py, deps.py
   routers/     auth, projects, forms, build, runtime, preview, database, ws

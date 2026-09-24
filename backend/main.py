@@ -1,7 +1,7 @@
 """JS-Delphi backend entry point.
 
 Run (from the repository root):
-    uvicorn backend.main:app --reload --port 8000
+    uv run uvicorn backend.main:app --reload --port 8000   (or: make backend)
 """
 from __future__ import annotations
 

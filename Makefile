@@ -1,31 +1,32 @@
 # JS-Delphi — web tabanlı Delphi RAD IDE
-#   make install   → Python venv + npm bağımlılıkları
+#   make install   → uv sync (Python ortamı) + npm bağımlılıkları
 #   make run       → IDE'yi derle ve http://127.0.0.1:8000 adresinde sun
 #   make dev       → backend (--reload) + Vite dev sunucusu (http://127.0.0.1:5173)
 
-PYTHON ?= python3
-VENV   ?= .venv
+UV     ?= uv
 HOST   ?= 127.0.0.1
 PORT   ?= 8000
-PY     := $(VENV)/bin/python
 NPM    := npm --prefix frontend
+UVICORN := $(UV) run uvicorn backend.main:app --host $(HOST) --port $(PORT)
 
 .DEFAULT_GOAL := help
-.PHONY: help install install-db runtime build run serve dev backend frontend test typecheck check screenshots clean distclean
+.PHONY: help uv install install-db lock runtime build run serve dev backend frontend test typecheck check screenshots clean distclean
 
 help: ## Hedefleri listele
 	@grep -hE '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 
-$(PY):
-	$(PYTHON) -m venv $(VENV)
-	$(PY) -m pip install -q --upgrade pip
+uv:
+	@command -v $(UV) >/dev/null 2>&1 || { echo "uv bulunamadı → curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
 
-install: $(PY) ## Python ve npm bağımlılıklarını kur
-	$(PY) -m pip install -q -r backend/requirements-dev.txt
+install: uv ## Python (uv sync → .venv) ve npm bağımlılıklarını kur
+	$(UV) sync
 	$(NPM) install
 
-install-db: $(PY) ## İsteğe bağlı DB sürücüleri (PostgreSQL, MySQL/MariaDB, MSSQL, MongoDB)
-	$(PY) -m pip install -q -r backend/requirements-db.txt
+install-db: uv ## İsteğe bağlı DB sürücüleriyle kur (PostgreSQL, MySQL/MariaDB, MSSQL, MongoDB)
+	$(UV) sync --extra db
+
+lock: uv ## pyproject.toml değişince uv.lock'u güncelle
+	$(UV) lock
 
 runtime: ## vcl.ts → vcl.js + vcl.d.ts + vcl.manifest.json
 	$(NPM) run build:runtime
@@ -35,23 +36,23 @@ build: ## IDE'yi derle (frontend/dist)
 
 run: build serve ## Derle ve tek sunucudan çalıştır
 
-serve: ## Backend'i derlenmiş IDE ile başlat
-	$(PY) -m uvicorn backend.main:app --host $(HOST) --port $(PORT)
+serve: uv ## Backend'i derlenmiş IDE ile başlat
+	$(UVICORN)
 
-backend: ## Yalnızca backend (otomatik yeniden yükleme)
-	$(PY) -m uvicorn backend.main:app --host $(HOST) --port $(PORT) --reload --reload-dir backend
+backend: uv ## Yalnızca backend (otomatik yeniden yükleme)
+	$(UVICORN) --reload --reload-dir backend
 
 frontend: ## Yalnızca Vite dev sunucusu (/api, /ws, /preview → backend proxy)
 	$(NPM) run dev -- --host $(HOST)
 
-dev: runtime ## Backend + Vite birlikte (Ctrl+C ikisini de durdurur)
+dev: uv runtime ## Backend + Vite birlikte (Ctrl+C ikisini de durdurur)
 	@trap 'kill 0' INT TERM; \
-	$(PY) -m uvicorn backend.main:app --host $(HOST) --port $(PORT) --reload --reload-dir backend & \
+	$(UVICORN) --reload --reload-dir backend & \
 	JSD_BACKEND=http://$(HOST):$(PORT) $(NPM) run dev -- --host $(HOST) & \
 	wait
 
-test: ## Backend testleri
-	$(PY) -m pytest backend/tests -q
+test: uv ## Backend testleri
+	$(UV) run pytest -q
 
 typecheck: ## TypeScript tip denetimi (IDE + VCL runtime)
 	$(NPM) run typecheck
@@ -66,4 +67,4 @@ clean: ## Derleme çıktılarını sil
 	find backend -name __pycache__ -type d -prune -exec rm -rf {} +
 
 distclean: clean ## Bağımlılıklar ve yerel veriler dahil her şeyi sil
-	rm -rf $(VENV) frontend/node_modules data projects
+	rm -rf .venv frontend/node_modules data projects
