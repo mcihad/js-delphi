@@ -1,0 +1,28 @@
+{
+  "name": "js-delphi-ide",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "JS-Delphi — web tabanlı Delphi RAD IDE (Vite + TypeScript + CSS)",
+  "scripts": {
+    "build:runtime": "node scripts/build-runtime.mjs",
+    "predev": "npm run build:runtime",
+    "dev": "vite",
+    "prebuild": "npm run build:runtime",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.runtime.json --noEmit",
+    "preview": "vite preview",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "monaco-editor": "0.56.0",
+    "sucrase": "3.35.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "esbuild": "0.28.2",
+    "playwright": "1.56.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}

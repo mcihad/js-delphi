@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./.runtime-types",
+    "rootDir": "../backend/runtime"
+  },
+  "files": ["../backend/runtime/vcl.ts"]
+}

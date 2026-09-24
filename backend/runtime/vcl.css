@@ -1,0 +1,1086 @@
+/*!
+ * JS-Delphi VCL runtime stylesheet — vcl.css
+ * Fixed runtime asset shared by the IDE designer (inside a shadow root) and every
+ * generated application. All selectors are namespaced with "vcl-".
+ * Look: Windows 11 (Fluent) light theme. System colours are CSS variables so a theme
+ * can be swapped without touching generated code.
+ */
+
+:root,
+:host {
+  --vcl-scrollbar: #c8c8c8;
+  --vcl-background: #1f4e79;
+  --vcl-activecaption: #ffffff;
+  --vcl-inactivecaption: #fafafa;
+  --vcl-menu: #f9f9f9;
+  --vcl-window: #ffffff;
+  --vcl-windowframe: #646464;
+  --vcl-menutext: #1a1a1a;
+  --vcl-windowtext: #1a1a1a;
+  --vcl-captiontext: #1a1a1a;
+  --vcl-activeborder: #b4b4b4;
+  --vcl-inactiveborder: #d4d4d4;
+  --vcl-appworkspace: #ababab;
+  --vcl-highlight: #0078d7;
+  --vcl-highlighttext: #ffffff;
+  --vcl-btnface: #f0f0f0;
+  --vcl-btnshadow: #a0a0a0;
+  --vcl-graytext: #8a8a8a;
+  --vcl-btntext: #1a1a1a;
+  --vcl-inactivecaptiontext: #6d6d6d;
+  --vcl-btnhighlight: #ffffff;
+  --vcl-3ddkshadow: #696969;
+  --vcl-3dlight: #e3e3e3;
+  --vcl-infotext: #1a1a1a;
+  --vcl-infobk: #ffffe1;
+  --vcl-hotlight: #0066cc;
+  --vcl-menuhighlight: #cce4f7;
+  --vcl-menubar: #f3f3f3;
+
+  --vcl-accent: #0078d7;
+  --vcl-accent-hover: #1a86dd;
+  --vcl-accent-press: #005499;
+  --vcl-control: #e1e1e1;
+  --vcl-control-border: #adadad;
+  --vcl-control-hover: #e5f1fb;
+  --vcl-control-press: #cce4f7;
+  --vcl-edit-border: #7a7a7a;
+  --vcl-edit-border-hover: #171717;
+  --vcl-edit-border-disabled: #cccccc;
+  --vcl-focus: #1a1a1a;
+  --vcl-selection: #cce8ff;
+  --vcl-radius: 0px;
+  --vcl-font: "Segoe UI", "Segoe UI Variable Text", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------------ desktop */
+
+html.vcl-app,
+html.vcl-app body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.vcl-desktop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  font-family: var(--vcl-font);
+  font-size: 12px;
+  color: var(--vcl-windowtext);
+  background:
+    radial-gradient(1200px 700px at 15% 10%, #dbe8f7 0%, transparent 60%),
+    radial-gradient(900px 600px at 90% 90%, #e7dcf5 0%, transparent 55%),
+    linear-gradient(135deg, #eef3f9 0%, #e6ecf4 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+.vcl-control {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.vcl-control *,
+.vcl-control *::before,
+.vcl-control *::after {
+  box-sizing: border-box;
+}
+
+.vcl-disabled {
+  color: var(--vcl-graytext);
+}
+
+.vcl-hidden-design {
+  opacity: 0.55;
+}
+
+.vcl-svg {
+  display: block;
+  flex: none;
+  fill: none;
+}
+
+.vcl-stroke path {
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------------------- forms */
+
+.vcl-form {
+  position: absolute;
+  background: var(--vcl-activecaption);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px #9a9a9a,
+    0 6px 16px rgba(0, 0, 0, 0.18),
+    0 18px 42px rgba(0, 0, 0, 0.16);
+  font-family: var(--vcl-font);
+  color: var(--vcl-windowtext);
+  --vcl-title-h: 32px;
+  --vcl-border-w: 1px;
+}
+
+.vcl-form.vcl-offscreen {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.vcl-form[data-border="bsNone"] {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.vcl-form.vcl-active:not(.vcl-designing) {
+  box-shadow:
+    0 0 0 1px var(--vcl-accent),
+    0 6px 16px rgba(0, 0, 0, 0.18),
+    0 18px 42px rgba(0, 0, 0, 0.16);
+}
+
+.vcl-form.vcl-maximized {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.vcl-form-titlebar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--vcl-title-h);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  user-select: none;
+  font-family: var(--vcl-font);
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  color: var(--vcl-captiontext);
+  cursor: default;
+}
+
+.vcl-form[data-border="bsNone"] .vcl-form-titlebar {
+  display: none;
+}
+
+.vcl-form:not(.vcl-active):not(.vcl-designing) .vcl-form-titlebar {
+  color: var(--vcl-inactivecaptiontext);
+}
+
+.vcl-form-icon {
+  color: var(--vcl-accent);
+  display: flex;
+}
+
+.vcl-form[data-border="bsDialog"] .vcl-form-icon,
+.vcl-form[data-border="bsToolWindow"] .vcl-form-icon,
+.vcl-form[data-border="bsSizeToolWin"] .vcl-form-icon {
+  display: none;
+}
+
+.vcl-form-caption {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.vcl-form-sysbuttons {
+  display: flex;
+  align-self: stretch;
+}
+
+.vcl-sysbtn {
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  transition: background-color 0.08s ease;
+}
+
+.vcl-form[data-border="bsToolWindow"] .vcl-sysbtn,
+.vcl-form[data-border="bsSizeToolWin"] .vcl-sysbtn {
+  width: 32px;
+}
+
+.vcl-form:not(.vcl-designing) .vcl-sysbtn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.vcl-form:not(.vcl-designing) .vcl-sysbtn-close:hover {
+  background: #c42b1c;
+  color: #fff;
+}
+
+.vcl-form.vcl-no-min .vcl-sysbtn-min,
+.vcl-form.vcl-no-max .vcl-sysbtn-max,
+.vcl-form.vcl-no-close .vcl-sysbtn {
+  display: none;
+}
+
+.vcl-form-client {
+  position: absolute;
+  left: var(--vcl-border-w);
+  right: var(--vcl-border-w);
+  top: calc(var(--vcl-title-h) + var(--vcl-border-w));
+  bottom: var(--vcl-border-w);
+  overflow: hidden;
+  background: var(--vcl-btnface);
+}
+
+.vcl-form[data-border="bsNone"] .vcl-form-client {
+  top: 0;
+}
+
+.vcl-form-sizegrip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  display: none;
+  z-index: 2;
+}
+
+.vcl-form.vcl-sizeable:not(.vcl-designing):not(.vcl-maximized) .vcl-form-sizegrip {
+  display: block;
+}
+
+.vcl-form.vcl-minimized {
+  width: 240px !important;
+  height: calc(var(--vcl-title-h) + 2px) !important;
+  top: auto !important;
+  bottom: 12px;
+  left: 12px !important;
+}
+
+.vcl-form.vcl-minimized .vcl-form-client {
+  display: none;
+}
+
+.vcl-form.vcl-flash {
+  animation: vcl-flash 0.3s ease;
+}
+
+@keyframes vcl-flash {
+  50% {
+    box-shadow:
+      0 0 0 2px var(--vcl-accent),
+      0 24px 48px rgba(0, 0, 0, 0.18);
+  }
+}
+
+.vcl-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* ------------------------------------------------------------------ labels */
+
+.vcl-label {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  line-height: 1.25;
+}
+
+.vcl-label-text {
+  display: inline-block;
+  flex: none;
+  white-space: pre;
+}
+
+.vcl-label.vcl-wordwrap .vcl-label-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.vcl-label.vcl-designing.vcl-empty {
+  outline: 1px dashed rgba(0, 0, 0, 0.35);
+  outline-offset: -1px;
+}
+
+/* ----------------------------------------------------------------- buttons */
+
+button.vcl-button,
+.vcl-dialog-button,
+.vcl-terminated-restart {
+  appearance: none;
+  font: inherit;
+  color: var(--vcl-btntext);
+  background: var(--vcl-control);
+  border: 1px solid var(--vcl-control-border);
+  border-radius: 0;
+  padding: 0 8px;
+  line-height: 1.2;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.vcl-button-caption {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vcl-button.vcl-wordwrap .vcl-button-caption {
+  white-space: normal;
+  text-align: center;
+}
+
+button.vcl-button:not(.vcl-designing):not(:disabled):hover,
+.vcl-dialog-button:hover,
+.vcl-terminated-restart:hover {
+  background: var(--vcl-control-hover);
+  border-color: var(--vcl-accent);
+}
+
+button.vcl-button:not(.vcl-designing):not(:disabled):active,
+.vcl-dialog-button:active {
+  background: var(--vcl-control-press);
+  border-color: var(--vcl-accent-press);
+}
+
+/* Default button: blue frame like a real Windows default push button */
+button.vcl-button.vcl-default,
+.vcl-dialog-button.vcl-default {
+  border-color: var(--vcl-accent);
+  box-shadow: inset 0 0 0 1px var(--vcl-accent);
+}
+
+button.vcl-button:disabled,
+button.vcl-button.vcl-disabled:not(.vcl-designing) {
+  color: #838383;
+  background: #cccccc;
+  border-color: #bfbfbf;
+  box-shadow: none;
+}
+
+button.vcl-button:focus-visible,
+.vcl-dialog-button:focus-visible,
+.vcl-nav-button:focus-visible {
+  outline: 1px dotted var(--vcl-focus);
+  outline-offset: -4px;
+}
+
+.vcl-checkbox:focus-visible .vcl-check-caption,
+.vcl-radiobutton:focus-visible .vcl-check-caption {
+  outline: 1px dotted var(--vcl-focus);
+}
+
+.vcl-checkbox:focus-visible,
+.vcl-radiobutton:focus-visible,
+.vcl-dbgrid:focus-visible,
+input.vcl-edit:focus-visible,
+textarea.vcl-memo:focus-visible {
+  outline: none;
+}
+
+/* ------------------------------------------------------------- edit/memo */
+
+/* Real Windows (Win32 themed) edit: 1px grey frame, square corners, darker on hover,
+   accent blue while focused. */
+input.vcl-edit,
+textarea.vcl-memo,
+.vcl-combobox,
+.vcl-dialog-input {
+  font: inherit;
+  color: var(--vcl-windowtext);
+  background-color: var(--vcl-window);
+  border: 1px solid var(--vcl-edit-border);
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  padding: 1px 4px;
+}
+
+input.vcl-edit.vcl-borderless {
+  border-color: transparent;
+}
+
+textarea.vcl-memo {
+  padding: 2px 4px;
+  resize: none;
+  line-height: 1.3;
+  white-space: pre-wrap;
+}
+
+textarea.vcl-memo[wrap="off"] {
+  white-space: pre;
+}
+
+input.vcl-edit:not(.vcl-designing):not(:disabled):hover,
+textarea.vcl-memo:not(.vcl-designing):not(:disabled):hover,
+.vcl-combobox:not(.vcl-designing):not(.vcl-disabled):hover,
+.vcl-dialog-input:hover {
+  border-color: var(--vcl-edit-border-hover);
+}
+
+input.vcl-edit:not(.vcl-designing):focus,
+textarea.vcl-memo:not(.vcl-designing):focus,
+.vcl-combobox:not(.vcl-designing):focus-within,
+.vcl-dialog-input:focus {
+  border-color: var(--vcl-accent);
+}
+
+input.vcl-edit::placeholder,
+.vcl-combo-input::placeholder,
+textarea.vcl-memo::placeholder {
+  color: #7a7a7a;
+}
+
+input.vcl-edit:disabled,
+textarea.vcl-memo:disabled,
+.vcl-combobox.vcl-disabled {
+  color: #6d6d6d;
+  background-color: #f0f0f0;
+  border-color: var(--vcl-edit-border-disabled);
+}
+
+.vcl-designing input,
+.vcl-designing textarea,
+input.vcl-designing,
+textarea.vcl-designing {
+  caret-color: transparent;
+}
+
+/* ---------------------------------------------------------------- combobox */
+
+.vcl-combobox {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+
+.vcl-combo-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 0 0 4px;
+}
+
+.vcl-combo-button {
+  width: 17px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a1a;
+}
+
+/* Drop-down list style looks like a Windows 10 button-combo */
+.vcl-combobox.vcl-dropdownlist {
+  background-color: var(--vcl-control);
+  border-color: var(--vcl-control-border);
+}
+
+.vcl-combobox.vcl-dropdownlist:not(.vcl-designing):hover {
+  background-color: var(--vcl-control-hover);
+  border-color: var(--vcl-accent);
+}
+
+.vcl-combobox.vcl-dropdownlist .vcl-combo-input {
+  cursor: default;
+}
+
+.vcl-combobox:not(.vcl-dropdownlist):not(.vcl-designing) .vcl-combo-button:hover {
+  background: var(--vcl-control-hover);
+}
+
+.vcl-popup {
+  position: fixed;
+  z-index: 100000;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #767676;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.18);
+  overflow-y: auto;
+  padding: 0;
+  font-family: var(--vcl-font);
+  color: var(--vcl-windowtext);
+}
+
+.vcl-combo-item {
+  height: 20px;
+  line-height: 20px;
+  padding: 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+
+.vcl-combo-item.vcl-hot,
+.vcl-combo-item.vcl-selected.vcl-hot {
+  background: var(--vcl-highlight);
+  color: var(--vcl-highlighttext);
+}
+
+.vcl-combo-item.vcl-selected {
+  background: var(--vcl-selection);
+}
+
+/* --------------------------------------------------------- check / radio */
+
+.vcl-checkbox,
+.vcl-radiobutton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  cursor: default;
+}
+
+.vcl-checkbox.vcl-box-right,
+.vcl-radiobutton.vcl-box-right {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.vcl-check-caption {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.vcl-wordwrap .vcl-check-caption {
+  white-space: normal;
+}
+
+.vcl-check-box {
+  position: relative;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #333333;
+  background: #ffffff;
+}
+
+.vcl-radiobutton .vcl-check-box {
+  border-radius: 50%;
+}
+
+.vcl-checkbox:not(.vcl-designing):not(.vcl-disabled):hover .vcl-check-box,
+.vcl-radiobutton:not(.vcl-designing):not(.vcl-disabled):hover .vcl-check-box {
+  border-color: var(--vcl-accent);
+}
+
+.vcl-checkbox.vcl-checked .vcl-check-box::after {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  top: 0.5px;
+  width: 3.5px;
+  height: 7px;
+  border: solid #1a1a1a;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+.vcl-checkbox:not(.vcl-designing):hover.vcl-checked .vcl-check-box::after {
+  border-color: var(--vcl-accent);
+}
+
+.vcl-checkbox.vcl-grayed .vcl-check-box::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #1a1a1a;
+}
+
+.vcl-radiobutton.vcl-checked .vcl-check-box::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+
+.vcl-checkbox.vcl-disabled .vcl-check-box,
+.vcl-radiobutton.vcl-disabled .vcl-check-box {
+  border-color: #bcbcbc;
+  background: #f0f0f0;
+}
+
+/* ------------------------------------------------------------------ image */
+
+.vcl-image {
+  overflow: hidden;
+}
+
+.vcl-image-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.vcl-image.vcl-designing.vcl-empty {
+  outline: 1px dashed rgba(0, 0, 0, 0.35);
+  outline-offset: -1px;
+  background:
+    linear-gradient(45deg, transparent 48%, rgba(0, 0, 0, 0.08) 49%, rgba(0, 0, 0, 0.08) 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(0, 0, 0, 0.08) 49%, rgba(0, 0, 0, 0.08) 51%, transparent 52%);
+}
+
+/* --------------------------------------------------------------- progress */
+
+.vcl-progressbar {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vcl-progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--vcl-accent);
+  border-radius: 3px;
+  transition: width 0.2s ease, height 0.2s ease;
+}
+
+.vcl-progressbar.vcl-vertical .vcl-progress-bar {
+  top: auto;
+  right: 0;
+  bottom: 0;
+}
+
+.vcl-progressbar.vcl-error .vcl-progress-bar {
+  background: #c42b1c;
+}
+
+.vcl-progressbar.vcl-paused .vcl-progress-bar {
+  background: #9d5d00;
+}
+
+.vcl-progressbar.vcl-marquee .vcl-progress-bar {
+  width: 30%;
+  animation: vcl-marquee 1.4s ease-in-out infinite;
+}
+
+@keyframes vcl-marquee {
+  from {
+    left: -30%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+/* ----------------------------------------------------------- panel & group */
+
+.vcl-panel {
+  overflow: hidden;
+}
+
+.vcl-panel-caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.vcl-groupbox {
+  overflow: hidden;
+}
+
+.vcl-groupbox-frame {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #dcdcdc;
+  border-radius: 0;
+  pointer-events: none;
+  min-width: 0;
+}
+
+.vcl-groupbox-caption {
+  padding: 0 2px;
+  margin-left: 6px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- tabcontrol */
+
+.vcl-tabcontrol {
+  overflow: hidden;
+}
+
+.vcl-tab-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 28px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 0 4px;
+  user-select: none;
+}
+
+.vcl-tabs-bottom .vcl-tab-strip {
+  top: auto;
+  bottom: 0;
+  align-items: flex-start;
+}
+
+.vcl-tab {
+  height: 26px;
+  line-height: 26px;
+  padding: 0 12px;
+  border-radius: 6px 6px 0 0;
+  color: rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.vcl-tabs-bottom .vcl-tab {
+  border-radius: 0 0 6px 6px;
+}
+
+.vcl-tabcontrol:not(.vcl-designing) .vcl-tab:not(.vcl-active):hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.vcl-tab.vcl-active {
+  background: var(--vcl-window);
+  color: var(--vcl-windowtext);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.vcl-tab-frame {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 27px;
+  bottom: 0;
+  background: var(--vcl-window);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0 6px 6px 6px;
+  pointer-events: none;
+}
+
+.vcl-tabs-bottom .vcl-tab-frame {
+  top: 0;
+  bottom: 27px;
+  border-radius: 6px 6px 6px 0;
+}
+
+/* --------------------------------------------------------------- scrollbox */
+
+.vcl-scrollbox {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+  border-radius: 2px;
+}
+
+.vcl-scrollbox.vcl-borderless {
+  box-shadow: none;
+}
+
+.vcl-scrollbox-content {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* ----------------------------------------------------------------- dbgrid */
+
+.vcl-dbgrid {
+  background-color: var(--vcl-window);
+  border: 1px solid var(--vcl-edit-border);
+  border-radius: 0;
+  overflow: hidden;
+  --vcl-row-h: 24px;
+}
+
+.vcl-dbgrid-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+}
+
+.vcl-dbgrid-table {
+  position: relative;
+  min-width: 100%;
+}
+
+.vcl-dbgrid-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  height: calc(var(--vcl-row-h) + 2px);
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  font-weight: 400;
+  user-select: none;
+}
+
+.vcl-dbgrid-body {
+  position: relative;
+}
+
+.vcl-dbgrid-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--vcl-row-h);
+  display: flex;
+}
+
+.vcl-grid-rowlines .vcl-dbgrid-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.vcl-grid-striped .vcl-dbgrid-row.vcl-odd {
+  background: #fafafa;
+}
+
+.vcl-dbgrid-row.vcl-current {
+  background: var(--vcl-selection) !important;
+}
+
+.vcl-grid-rowselect .vcl-dbgrid-row.vcl-current {
+  background: var(--vcl-highlight) !important;
+  color: var(--vcl-highlighttext);
+}
+
+.vcl-dbgrid-cell {
+  flex: none;
+  height: 100%;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.vcl-dbgrid-cell {
+  display: block;
+  line-height: var(--vcl-row-h);
+}
+
+.vcl-dbgrid-head .vcl-dbgrid-cell {
+  line-height: calc(var(--vcl-row-h) + 2px);
+}
+
+.vcl-grid-collines .vcl-dbgrid-cell {
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.vcl-dbgrid-indicator {
+  padding: 0;
+  text-align: center;
+  color: var(--vcl-accent);
+  background: #f7f7f7;
+  font-size: 10px;
+}
+
+.vcl-dbgrid-title {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.vcl-dbgrid-editor {
+  position: absolute;
+  inset: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  font: inherit;
+  border: none;
+  outline: 2px solid var(--vcl-accent);
+  padding: 0 5px;
+  background: #fff;
+}
+
+.vcl-dbgrid-empty {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  text-align: center;
+  color: var(--vcl-graytext);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------ dbnavigator */
+
+.vcl-dbnavigator {
+  display: flex;
+  gap: 2px;
+}
+
+.vcl-nav-button {
+  appearance: none;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  color: var(--vcl-btntext);
+  background: var(--vcl-control);
+  border: 1px solid var(--vcl-control-border);
+  border-radius: 0;
+  padding: 0;
+}
+
+.vcl-dbnavigator:not(.vcl-designing) .vcl-nav-button:not(:disabled):hover {
+  background: var(--vcl-control-hover);
+  border-color: var(--vcl-accent);
+}
+
+.vcl-nav-button:disabled {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+/* ---------------------------------------------------------------- dialogs */
+
+.vcl-dialog-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vcl-dialog {
+  min-width: 320px;
+  max-width: min(560px, 92vw);
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.14),
+    0 32px 64px rgba(0, 0, 0, 0.24);
+  font-family: var(--vcl-font);
+  font-size: 12px;
+  color: var(--vcl-windowtext);
+  animation: vcl-dialog-in 0.12s ease-out;
+}
+
+@keyframes vcl-dialog-in {
+  from {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+}
+
+.vcl-dialog-title {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 14px;
+  background: var(--vcl-activecaption);
+  user-select: none;
+}
+
+.vcl-dialog-body {
+  display: flex;
+  gap: 14px;
+  padding: 20px 22px 22px;
+  align-items: flex-start;
+}
+
+.vcl-dialog-icon {
+  color: var(--vcl-accent);
+}
+
+.vcl-icon-mtError {
+  color: #c42b1c;
+}
+
+.vcl-icon-mtWarning {
+  color: #9d5d00;
+}
+
+.vcl-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.vcl-dialog-text {
+  white-space: pre-wrap;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.vcl-dialog-input {
+  height: 30px;
+}
+
+.vcl-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 20px;
+  background: var(--vcl-btnface);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.vcl-dialog-button {
+  min-width: 96px;
+  height: 32px;
+}
+
+/* ------------------------------------------------------------- terminated */
+
+.vcl-terminated {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.vcl-terminated-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.vcl-terminated-restart {
+  height: 32px;
+  padding: 0 18px;
+}

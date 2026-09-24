@@ -1,0 +1,14 @@
+{
+  "name": {{ package_name | to_ts_literal }},
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": {{ project.title | to_ts_literal }},
+  "scripts": {
+    "typecheck": "tsc -p build/tsconfig.json",
+    "serve": "npx --yes serve build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}

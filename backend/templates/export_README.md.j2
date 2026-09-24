@@ -1,0 +1,26 @@
+# {{ project.title }}
+
+JS-Delphi ile tasarlanıp derlenen proje (`{{ project.name }}`).
+
+| Klasör / dosya | İçerik |
+| --- | --- |
+| `project.tson` | Proje meta verisi |
+| `forms/*.design.tson` | Form tasarımları (Delphi `.dfm` karşılığı, JSON) |
+| `forms/*.ts` | Form kod birimleri (unit) |
+| `build/` | Çalıştırılabilir çıktı: `index.html`, `FormN.html`, `FormN.js`, `vcl.js`, `vcl.css` ve TypeScript kaynakları |
+
+## Çalıştırma
+
+`build/` klasörünü herhangi bir statik sunucuyla yayınlayın (`npm run serve`).
+Veritabanı bileşenleri (TQuery/TTable/TStoredProc) çalışma zamanında bir JS-Delphi
+backend'inin `/api/db/{connection_id}/…` uç noktalarına ihtiyaç duyar; bağlantı bilgileri
+yalnızca sunucuda şifreli tutulur.
+
+## Tip denetimi
+
+```
+npm install
+npm run typecheck
+```
+
+Formlar: {% for f in forms %}`{{ f.name }}`{% if not loop.last %}, {% endif %}{% endfor %}.

@@ -1,0 +1,59 @@
+{#- Shared emission macros. Every value goes through to_ts_literal, every identifier
+    through ident (re-validated), so templates only ever assemble validated data. -#}
+{% macro prop_stmt(target, p) -%}
+{% if p.emit == 'font' -%}
+{{ target }}.Font.FromJSON({{ p.value | to_ts_literal }});
+{%- elif p.emit == 'strings' -%}
+{{ target }}.{{ p.name | ident }}.SetStrings({{ p.value | to_ts_literal }});
+{%- elif p.emit == 'params' -%}
+{{ target }}.{{ p.name | ident }}.FromJSON({{ p.value | to_ts_literal }});
+{%- else -%}
+{{ target }}.{{ p.name | ident }} = {{ p.value | to_ts_literal }};
+{%- endif %}
+{%- endmacro %}
+
+{% macro body(form) %}
+    const f = this;
+    f.Name = {{ form.name | to_ts_literal }};
+{% for p in form.props %}
+    {{ prop_stmt('f', p) }}
+{% endfor %}
+{% for c in form.components %}
+
+    // {{ c.name }}: {{ c.class_name }}
+    const {{ c.var }} = f.{{ c.name | ident }} = new {{ c.class_name | ident }}(f);
+    {{ c.var }}.Name = {{ c.name | to_ts_literal }};
+{% if c.parent is not none %}
+    {{ c.var }}.Parent = {{ 'f' if c.parent == '' else 'f.' ~ (c.parent | ident) }};
+{% endif %}
+{% for p in c.props %}
+    {{ prop_stmt(c.var, p) }}
+{% endfor %}
+{% endfor %}
+{% set has_refs = form.refs or (form.components | selectattr('refs') | list) %}
+{% if has_refs %}
+
+    // component references (resolved after every component exists — Delphi fixups)
+{% for prop, target in form.refs %}
+    f.{{ prop | ident }} = f.{{ target | ident }};
+{% endfor %}
+{% for c in form.components %}
+{% for prop, target in c.refs %}
+    {{ c.var }}.{{ prop | ident }} = {{ 'f' if target == form.name else 'f.' ~ (target | ident) }};
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% set has_events = form.events or (form.components | selectattr('events') | list) %}
+{% if has_events %}
+
+    // events → methods of {{ form.name }} (see the unit below)
+{% for ev, handler in form.events %}
+    f.BindEvent(f, {{ ev | to_ts_literal }}, {{ handler | to_ts_literal }});
+{% endfor %}
+{% for c in form.components %}
+{% for ev, handler in c.events %}
+    f.BindEvent({{ c.var }}, {{ ev | to_ts_literal }}, {{ handler | to_ts_literal }});
+{% endfor %}
+{% endfor %}
+{% endif %}
+{%- endmacro %}

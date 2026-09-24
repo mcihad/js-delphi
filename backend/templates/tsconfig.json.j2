@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": false,
+    "noImplicitThis": true,
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": [{% for f in files %}{{ f | to_ts_literal }}{% if not loop.last %}, {% endif %}{% endfor %}]
+}

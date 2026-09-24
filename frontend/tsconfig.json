@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "useDefineForClassFields": true,
+    "paths": {
+      "@vcl": ["../backend/runtime/vcl.ts"],
+      "@runtime/*": ["../backend/runtime/*"]
+    }
+  },
+  "include": ["ts", "vendor", "vite.config.ts"]
+}

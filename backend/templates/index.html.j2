@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="JS-Delphi VCL {{ vcl_version }}">
+  <title>{{ project.title }}</title>
+  <link rel="stylesheet" href="vcl.css">
+  <style>
+    body.jsd-launcher { margin: 0; min-height: 100vh; font-family: var(--vcl-font); color: #1a1a1a;
+      background: radial-gradient(1000px 600px at 10% 0%, #dbe8f7, transparent 60%), linear-gradient(135deg, #eef3f9, #e6ecf4); }
+    .jsd-launcher main { max-width: 760px; margin: 0 auto; padding: 56px 24px; }
+    .jsd-launcher h1 { font-size: 28px; font-weight: 600; margin: 0 0 6px; }
+    .jsd-launcher p.desc { margin: 0 0 28px; color: #555; font-size: 14px; }
+    .jsd-launcher nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .jsd-launcher a.card { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; background: #fff; border-radius: 10px;
+      text-decoration: none; color: inherit; box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .12s ease; }
+    .jsd-launcher a.card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(0,103,192,.35), 0 10px 24px rgba(0,0,0,.10); }
+    .jsd-launcher .name { font-weight: 600; font-size: 15px; }
+    .jsd-launcher .caption { color: #666; font-size: 13px; }
+    .jsd-launcher .badge { align-self: flex-start; margin-top: 6px; font-size: 11px; color: #fff; background: #0067c0; border-radius: 10px; padding: 2px 8px; }
+    .jsd-launcher footer { margin-top: 36px; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body class="jsd-launcher">
+  <main>
+    <h1>{{ project.title }}</h1>
+    <p class="desc">{{ project.description or 'Formlardan birini seçerek uygulamayı başlatın.' }}</p>
+    <nav>
+{% for f in forms %}
+      <a class="card" href="{{ f.name }}.html">
+        <span class="name">{{ f.name }}</span>
+        <span class="caption">{{ f.caption }}</span>
+{% if f.name == project.main_form %}
+        <span class="badge">Ana form</span>
+{% endif %}
+      </a>
+{% endfor %}
+    </nav>
+    <footer>JS-Delphi ile derlendi · VCL {{ vcl_version }}</footer>
+  </main>
+</body>
+</html>
